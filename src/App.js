@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import 'bootstrap/dist/css/bootstrap.css';
 
 function App() {
+  const [pokemon, setPokemon] = useState([]);
+  const handleClick = (e) => {
+    e.preventDefault();
+    fetch("https://pokeapi.co/api/v2/pokemon?offset=20&limit=907")
+      .then(res =>  res.json())
+      // .then(res => console.log(res))
+      .then(res =>  setPokemon(res.results) )
+      .catch(err => console.log(err))
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={(e) => handleClick(e)}>Get Poke</button>
+      {pokemon.map((p,idx ) => {
+        return <p key={idx}>{p.name}</p>})}
     </div>
   );
-}
 
+}
 export default App;
